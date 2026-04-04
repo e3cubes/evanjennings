@@ -1,5 +1,1001 @@
 <!DOCTYPE html>
-<html>
-<head><title>My Site</title></head>
-<body><h1>Hello, world!</h1></body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evan Jennings — Analytics, Automation & AI for Mid-Market</title>
+  <meta name="description" content="Evan Jennings — Founder of Quantify Consulting. Enterprise-grade analytics, automation, and AI for mid-market commercial teams. Carnegie Mellon MBA. Ex-Amazon.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,400;0,700;1,200;1,400&family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --bg-primary: #08090c;
+      --bg-secondary: #101218;
+      --bg-tertiary: #181b24;
+      --bg-card: #12141c;
+
+      --accent-1: #00e5a0;
+      --accent-2: #3d8bfd;
+      --accent-3: #ff6b35;
+      --accent-1-dim: rgba(0, 229, 160, 0.08);
+      --accent-2-dim: rgba(61, 139, 253, 0.06);
+
+      --text-primary: #e8ecf4;
+      --text-secondary: #8a92a6;
+      --text-tertiary: #4d566a;
+
+      --border: #1e2230;
+      --border-accent: rgba(0, 229, 160, 0.2);
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 6rem;
+      --space-2xl: 10rem;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-1) var(--bg-secondary);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--accent-1);
+      color: var(--bg-primary);
+    }
+
+    a {
+      color: var(--accent-1);
+      text-decoration: none;
+      transition: color 0.3s var(--ease);
+    }
+    a:hover { color: var(--accent-2); }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 160, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 160, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -40%;
+      right: -20%;
+      width: 70vw;
+      height: 70vw;
+      background: radial-gradient(circle, rgba(0, 229, 160, 0.06) 0%, rgba(61, 139, 253, 0.03) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    section {
+      padding: var(--space-xl) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-1);
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-accent), transparent);
+    }
+    .section-label span { color: var(--text-tertiary); }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(8, 9, 12, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+    }
+    .nav-logo em { font-style: normal; color: var(--accent-1); }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: var(--space-xs) 0;
+      position: relative;
+      transition: color 0.3s var(--ease);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent-1);
+      transition: width 0.4s var(--ease);
+    }
+    .nav-links a:hover { color: var(--accent-1); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--text-primary);
+      margin: 5px 0;
+      transition: 0.3s var(--ease);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: var(--space-2xl);
+      padding-bottom: var(--space-xl);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--accent-1);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .hero h1 .accent { color: var(--accent-1); }
+
+    .hero-subtitle {
+      font-weight: 200;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.7;
+      margin-bottom: var(--space-lg);
+    }
+    .hero-subtitle strong {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      background: var(--accent-1);
+      color: var(--bg-primary);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .btn-primary:hover {
+      color: var(--bg-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 229, 160, 0.25);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .about-text p {
+      font-weight: 200;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+      line-height: 1.8;
+    }
+    .about-text p:first-child {
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: var(--space-md);
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .stat-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--accent-1);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding-left: var(--space-lg);
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--accent-1), var(--border), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-lg);
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-lg));
+      top: 8px;
+      width: 9px; height: 9px;
+      background: var(--accent-1);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(0, 229, 160, 0.4);
+    }
+
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-1);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-role {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.03em;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-company {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      margin-bottom: var(--space-sm);
+    }
+
+    .timeline-desc {
+      color: var(--text-secondary);
+      font-weight: 200;
+      font-size: 0.95rem;
+      max-width: 650px;
+      line-height: 1.8;
+    }
+
+    .timeline-sub {
+      margin-top: var(--space-md);
+      padding-left: var(--space-sm);
+      border-left: 1px solid var(--border);
+    }
+
+    .timeline-sub-item { margin-bottom: var(--space-sm); }
+    .timeline-sub-item:last-child { margin-bottom: 0; }
+
+    .timeline-sub-role {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .timeline-sub-meta {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+      font-weight: 300;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-sub-desc {
+      color: var(--text-secondary);
+      font-weight: 200;
+      font-size: 0.85rem;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .skill-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: var(--space-md);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .skill-block:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+    }
+    .skill-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+    .skill-block:hover::before { opacity: 1; }
+
+    .skill-category {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      padding: 0.3rem 0.7rem;
+      background: var(--accent-1-dim);
+      color: var(--accent-1);
+      border: 1px solid rgba(0, 229, 160, 0.1);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.4s var(--ease), transform 0.3s var(--ease);
+    }
+    .project-card:hover {
+      border-color: var(--accent-2);
+      transform: translateY(-3px);
+    }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.03em;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-weight: 200;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .project-link {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-1);
+      margin-top: var(--space-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.3s var(--ease);
+    }
+    .project-link:hover { gap: 0.7rem; }
+
+    /* EDUCATION */
+    .education-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+    }
+
+    .edu-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: var(--space-md);
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .edu-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+    }
+
+    .edu-degree {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+
+    .edu-school {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--accent-1);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .edu-detail {
+      font-weight: 200;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: var(--space-lg) 0;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .footer-links a:hover { color: var(--accent-1); }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+    }
+
+    /* ANIMATIONS */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeInUp 0.8s var(--ease) forwards;
+    }
+    .stagger-1 { animation-delay: 0.05s; }
+    .stagger-2 { animation-delay: 0.12s; }
+    .stagger-3 { animation-delay: 0.2s; }
+    .stagger-4 { animation-delay: 0.28s; }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in, .reveal { animation: none; opacity: 1; transform: none; transition: none; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: rgba(8, 9, 12, 0.95);
+        backdrop-filter: blur(20px);
+        padding: var(--space-md);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-toggle { display: block; }
+      .hero h1 { font-size: clamp(2.8rem, 12vw, 5rem); }
+      .about-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .education-grid { grid-template-columns: 1fr; }
+      .timeline { padding-left: var(--space-md); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">EVAN<em>JENNINGS</em></div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="mailto:ejenning@alumni.cmu.edu">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="wrapper">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero-eyebrow fade-in stagger-1">Analytics &bull; Automation &bull; AI</p>
+      <h1 class="fade-in stagger-2">EVAN<br><span class="accent">JENNINGS</span></h1>
+      <p class="hero-subtitle fade-in stagger-3">
+        Giving mid-market CROs and CFOs the <strong>data clarity that $1B companies have</strong> — without the $10M budget. Founder of <a href="https://quantify-consulting.com" target="_blank" rel="noopener">Quantify</a>. Carnegie Mellon MBA. Ex-Amazon.
+      </p>
+      <div class="hero-cta-row fade-in stagger-4">
+        <a href="mailto:ejenning@alumni.cmu.edu" class="btn-primary">Get in touch &rarr;</a>
+        <a href="https://quantify-consulting.com" target="_blank" rel="noopener" class="btn-outline">Quantify Consulting</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-label reveal"><span>01</span>&nbsp;/&nbsp;About</div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            Mid-market companies shouldn't have to choose between operational chaos and enterprise budgets.
+          </p>
+          <p>
+            After building analytics infrastructure at AWS and high-growth startups, I kept seeing the same pattern: mid-market companies drowning in spreadsheets while their competitors automated everything. The enterprise playbook existed — but nobody was translating it for companies with limited budgets and timelines.
+          </p>
+          <p>
+            So in January 2025, I founded Quantify to bridge that gap. We bring enterprise-grade Analytics, Automation, and AI to commercial ops leaders who need competitive capabilities without the typical cost or complexity.
+          </p>
+          <p>
+            In under a year: zero to nearly 20 clients and a team of 4.
+          </p>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat-card">
+            <div class="stat-number">~20</div>
+            <div class="stat-label">Clients Served</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">7+</div>
+            <div class="stat-label">Years in Analytics</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Years at AWS</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">MBA</div>
+            <div class="stat-label">Carnegie Mellon Tepper</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-label reveal"><span>02</span>&nbsp;/&nbsp;Experience</div>
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <div class="timeline-date">Jan 2025 — Present</div>
+          <div class="timeline-role">FOUNDER & PRINCIPAL ANALYTICS CONSULTANT</div>
+          <div class="timeline-company"><a href="https://quantify-consulting.com" target="_blank" rel="noopener">Quantify Consulting</a> &middot; Lowville, NY</div>
+          <div class="timeline-desc">
+            Enterprise-grade commercial digitalization for mid-market companies. Analytics & BI (Snowflake, BigQuery, Tableau, Power BI), automation (Zapier, Power Automate, Apps Script), and practical AI implementation. Strategic roadmapping sessions that train leadership on modern 3A technologies and build prioritized digitalization roadmaps. Grown to nearly 20 clients across diverse industries with a team of 4.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-date">2022 — 2025 &middot; 3 years</div>
+          <div class="timeline-role">SENIOR BUSINESS INTELLIGENCE ENGINEER (L6)</div>
+          <div class="timeline-company">Amazon Web Services &middot; New York, NY</div>
+          <div class="timeline-desc">
+            Led VP-sponsored initiative reducing EC2 costs 9% across a $25-50B revenue vertical through metric definition, Tableau dashboards, and cross-functional coordination. Built the #4-ranked revenue analytics dashboard (17,500+ views, 470+ users) enabling 500+ account teams to investigate daily anomalies. Created customer health dashboard for AWS's largest relationship ($6B revenue). Architected Redshift data models using advanced SQL, CTEs, and window functions. Mentored 3 BIEs and championed GenAI adoption.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-date">2021 — 2022 &middot; 1 year</div>
+          <div class="timeline-role">BUSINESS ANALYTICS MANAGER, REVENUE OPERATIONS</div>
+          <div class="timeline-company">Plume Design, Inc &middot; Palo Alto, CA</div>
+          <div class="timeline-desc">
+            First analytics leader in revenue operations. Architected sales data warehouse in Databricks using Fivetran to integrate Salesforce, HubSpot, Marketo, and S3. Built global ISP dataset cataloging 10,000+ providers for TAM analysis across a multi-billion dollar addressable market. Partnered with VP RevOps and CRO to develop sales hiring plan using productivity metrics and ramp assumptions.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-date">2018 — 2021 &middot; 3 years</div>
+          <div class="timeline-role">MBA STUDENT & CONCURRENT BI ROLES</div>
+          <div class="timeline-company">Carnegie Mellon University — Tepper School of Business</div>
+          <div class="timeline-desc">
+            Completed MBA with University Honors while holding concurrent analytics positions:
+          </div>
+          <div class="timeline-sub">
+            <div class="timeline-sub-item">
+              <div class="timeline-sub-role">SENIOR BI ENGINEER — BITSIGHT TECHNOLOGIES</div>
+              <div class="timeline-sub-meta">2020 – 2021</div>
+              <div class="timeline-sub-desc">Built master ARR/MRR dataset in Snowflake saving FP&A 25-30 hours monthly. Led Fivetran implementation saving $80K/year. Developed Python logit model predicting customer attrition.</div>
+            </div>
+            <div class="timeline-sub-item">
+              <div class="timeline-sub-role">SENIOR BI ANALYST — NWN CAROUSEL</div>
+              <div class="timeline-sub-meta">2019 – 2020</div>
+              <div class="timeline-sub-desc">Migrated revenue reporting to Snowflake/Power BI serving 200+ users, reducing cycle time 90%. Automated contract costing eliminating 100 hours monthly.</div>
+            </div>
+            <div class="timeline-sub-item">
+              <div class="timeline-sub-role">BUSINESS ANALYST — HEXAGON MANUFACTURING</div>
+              <div class="timeline-sub-meta">2018 – 2019</div>
+              <div class="timeline-sub-desc">Built Salesforce CPQ tool generating quotes and BOMs. Optimized pricing across 1,000+ configurations.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-date">2016 — 2018 &middot; 2 years</div>
+          <div class="timeline-role">CHANNEL DEVELOPMENT & INSIDE TECHNICAL SALES</div>
+          <div class="timeline-company">APC by Schneider Electric</div>
+          <div class="timeline-desc">
+            Channel Development Rep (West Kingston, RI) and Inside Technical Sales Rep (Costa Mesa, CA). Early-career sales experience providing deep understanding of what commercial teams actually need from their data.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-date">2009 — 2016 &middot; 7 years</div>
+          <div class="timeline-role">FOUNDER — E3CUBESTORE</div>
+          <div class="timeline-company">Lowville, NY</div>
+          <div class="timeline-desc">
+            Founded at age 14 with a few hundred dollars, grew into a $50,000+ online puzzle retail enterprise by 2013. Featured in Wharton's Knowledge@Wharton High School and NPR. Recipient of Clarkson University "Young Entrepreneur" Scholarship.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-label reveal"><span>03</span>&nbsp;/&nbsp;Skills &amp; Tools</div>
+      <div class="skills-grid">
+        <div class="skill-block reveal">
+          <div class="skill-category">ANALYTICS & BI</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Tableau</span>
+            <span class="skill-tag">Power BI</span>
+            <span class="skill-tag">Looker Studio</span>
+            <span class="skill-tag">Advanced SQL</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">FP&A</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-category">DATA ENGINEERING</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Snowflake</span>
+            <span class="skill-tag">Redshift</span>
+            <span class="skill-tag">BigQuery</span>
+            <span class="skill-tag">Databricks</span>
+            <span class="skill-tag">Fivetran</span>
+            <span class="skill-tag">Azure Data Factory</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-category">AUTOMATION</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Zapier</span>
+            <span class="skill-tag">Power Automate</span>
+            <span class="skill-tag">Apps Script</span>
+            <span class="skill-tag">Airtable</span>
+            <span class="skill-tag">ETL Pipelines</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-category">AI & ML</div>
+          <div class="skill-tags">
+            <span class="skill-tag">GenAI / LLMs</span>
+            <span class="skill-tag">Predictive Models</span>
+            <span class="skill-tag">AI Workflow Integration</span>
+            <span class="skill-tag">Data Enrichment</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-category">PLATFORMS & CRM</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Salesforce</span>
+            <span class="skill-tag">HubSpot</span>
+            <span class="skill-tag">Marketo</span>
+            <span class="skill-tag">Apollo.io</span>
+            <span class="skill-tag">AWS</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-category">CERTIFICATIONS</div>
+          <div class="skill-tags">
+            <span class="skill-tag">AWS Cloud Practitioner</span>
+            <span class="skill-tag">Certified Integration Developer</span>
+            <span class="skill-tag">Microsoft Power BI</span>
+            <span class="skill-tag">GenAI with LLMs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-label reveal"><span>04</span>&nbsp;/&nbsp;What We Build at Quantify</div>
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="project-tag">Analytics & BI</div>
+          <div class="project-title">EXECUTIVE DASHBOARDS</div>
+          <div class="project-desc">
+            Data warehouses, ETL pipelines, and executive dashboards that give leadership real-time visibility into revenue, profitability by customer and product, and pipeline health.
+          </div>
+          <a href="https://quantify-consulting.com" target="_blank" rel="noopener" class="project-link">Learn more &rarr;</a>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-tag">Automation</div>
+          <div class="project-title">PROCESS AUTOMATION</div>
+          <div class="project-desc">
+            Business process automation, system integrations, automated reporting, and Airtable-based operational systems that eliminate manual work and data errors.
+          </div>
+          <a href="https://quantify-consulting.com" target="_blank" rel="noopener" class="project-link">Learn more &rarr;</a>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-tag">AI Implementation</div>
+          <div class="project-title">PRACTICAL AI INTEGRATION</div>
+          <div class="project-desc">
+            GenAI applications embedded in real workflows — LLM integration, AI-powered data enrichment, and intelligent automation that augments your team without the hype.
+          </div>
+          <a href="https://quantify-consulting.com" target="_blank" rel="noopener" class="project-link">Learn more &rarr;</a>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-tag">Strategy</div>
+          <div class="project-title">STRATEGIC ROADMAPPING</div>
+          <div class="project-desc">
+            3-4 hour sessions where we train commercial leadership on modern 3A technologies and build a prioritized digitalization roadmap tailored to your team's maturity and goals.
+          </div>
+          <a href="https://quantify-consulting.com" target="_blank" rel="noopener" class="project-link">Learn more &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="section-label reveal"><span>05</span>&nbsp;/&nbsp;Education</div>
+      <div class="education-grid">
+        <div class="edu-card reveal">
+          <div class="edu-degree">MBA WITH UNIVERSITY HONORS</div>
+          <div class="edu-school">Carnegie Mellon University — Tepper School of Business</div>
+          <div class="edu-detail">
+            Business Analytics, Finance & Operations<br>
+            2018 — 2021<br>
+            Henry Ford II Scholar Award
+          </div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-degree">B.S. WITH GREAT DISTINCTION</div>
+          <div class="edu-school">Clarkson University</div>
+          <div class="edu-detail">
+            Innovation & Entrepreneurship<br>
+            Minors in Project Management & Law<br>
+            "Young Entrepreneur" Scholarship Recipient
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrapper">
+      <ul class="footer-links">
+        <li><a href="https://www.linkedin.com/in/evan-jennings/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://quantify-consulting.com" target="_blank" rel="noopener">Quantify</a></li>
+        <li><a href="mailto:ejenning@alumni.cmu.edu">Email</a></li>
+      </ul>
+      <p class="footer-copy">&copy; 2026 Evan Jennings. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
 </html>
