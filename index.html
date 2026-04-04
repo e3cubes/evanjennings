@@ -8,31 +8,24 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,400;0,700;1,200;1,400&family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:ital,wght@0,200;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --font-display: 'Bebas Neue', sans-serif;
+      --font-display: 'Outfit', sans-serif;
       --font-body: 'DM Sans', sans-serif;
-      --font-mono: 'IBM Plex Mono', monospace;
+      --font-mono: 'JetBrains Mono', monospace;
 
-      --bg-primary: #08090c;
-      --bg-secondary: #101218;
-      --bg-tertiary: #181b24;
-      --bg-card: #12141c;
-
-      --accent-1: #00e5a0;
-      --accent-2: #3d8bfd;
-      --accent-3: #ff6b35;
-      --accent-1-dim: rgba(0, 229, 160, 0.08);
-      --accent-2-dim: rgba(61, 139, 253, 0.06);
-
-      --text-primary: #e8ecf4;
-      --text-secondary: #8a92a6;
-      --text-tertiary: #4d566a;
-
-      --border: #1e2230;
-      --border-accent: rgba(0, 229, 160, 0.2);
+      --color-ink: #0D0D0D;
+      --color-deep-space: #1A1A2E;
+      --color-royal-electric: #7B2FBE;
+      --color-cosmic-violet: #A855F7;
+      --color-snow: #F5F5F7;
+      --color-steel: #6B7280;
+      --color-mist: #D1D5DB;
+      --color-lavender-tint: #E9D5FF;
+      --color-white: #FFFFFF;
+      --color-signal-green: #22C55E;
 
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -49,38 +42,38 @@
     html {
       scroll-behavior: smooth;
       scrollbar-width: thin;
-      scrollbar-color: var(--accent-1) var(--bg-secondary);
+      scrollbar-color: var(--color-royal-electric) var(--color-snow);
     }
 
     body {
       font-family: var(--font-body);
       font-weight: 400;
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      background: var(--color-snow);
+      color: var(--color-ink);
       line-height: 1.7;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
     ::selection {
-      background: var(--accent-1);
-      color: var(--bg-primary);
+      background: var(--color-cosmic-violet);
+      color: var(--color-white);
     }
 
     a {
-      color: var(--accent-1);
+      color: var(--color-royal-electric);
       text-decoration: none;
       transition: color 0.3s var(--ease);
     }
-    a:hover { color: var(--accent-2); }
+    a:hover { color: var(--color-cosmic-violet); }
 
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(0, 229, 160, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 160, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(123, 47, 190, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(123, 47, 190, 0.03) 1px, transparent 1px);
       background-size: 60px 60px;
       pointer-events: none;
       z-index: 0;
@@ -89,11 +82,11 @@
     body::after {
       content: '';
       position: fixed;
-      top: -40%;
-      right: -20%;
-      width: 70vw;
-      height: 70vw;
-      background: radial-gradient(circle, rgba(0, 229, 160, 0.06) 0%, rgba(61, 139, 253, 0.03) 40%, transparent 70%);
+      top: -30%;
+      right: -15%;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle, rgba(123, 47, 190, 0.05) 0%, rgba(168, 85, 247, 0.03) 40%, transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
@@ -108,7 +101,7 @@
 
     section {
       padding: var(--space-xl) 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--color-mist);
     }
     section:last-of-type { border-bottom: none; }
 
@@ -119,30 +112,28 @@
       margin-bottom: var(--space-lg);
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--accent-1);
+      color: var(--color-royal-electric);
     }
     .section-label::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, var(--border-accent), transparent);
+      background: linear-gradient(90deg, var(--color-mist), transparent);
     }
-    .section-label span { color: var(--text-tertiary); }
+    .section-label span { color: var(--color-steel); }
 
     /* NAV */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 100;
-      background: rgba(8, 9, 12, 0.8);
+      background: rgba(245, 245, 247, 0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--color-mist);
     }
 
     .nav-inner {
@@ -156,11 +147,12 @@
 
     .nav-logo {
       font-family: var(--font-display);
-      font-size: 1.5rem;
-      letter-spacing: 0.06em;
-      color: var(--text-primary);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
     }
-    .nav-logo em { font-style: normal; color: var(--accent-1); }
+    .nav-logo em { font-style: normal; color: var(--color-royal-electric); }
 
     .nav-links {
       display: flex;
@@ -171,10 +163,10 @@
     .nav-links a {
       font-family: var(--font-mono);
       font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+      font-weight: 400;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--text-secondary);
+      color: var(--color-steel);
       padding: var(--space-xs) 0;
       position: relative;
       transition: color 0.3s var(--ease);
@@ -183,11 +175,11 @@
       content: '';
       position: absolute;
       bottom: 0; left: 0;
-      width: 0; height: 1px;
-      background: var(--accent-1);
+      width: 0; height: 1.5px;
+      background: var(--color-royal-electric);
       transition: width 0.4s var(--ease);
     }
-    .nav-links a:hover { color: var(--accent-1); }
+    .nav-links a:hover { color: var(--color-royal-electric); }
     .nav-links a:hover::after { width: 100%; }
 
     .nav-toggle {
@@ -200,7 +192,7 @@
     .nav-toggle span {
       display: block;
       width: 24px; height: 2px;
-      background: var(--text-primary);
+      background: var(--color-ink);
       margin: 5px 0;
       transition: 0.3s var(--ease);
     }
@@ -213,14 +205,14 @@
       justify-content: center;
       padding-top: var(--space-2xl);
       padding-bottom: var(--space-xl);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--color-mist);
     }
 
     .hero-eyebrow {
       font-family: var(--font-mono);
       font-size: 0.8rem;
-      font-weight: 300;
-      color: var(--accent-1);
+      font-weight: 400;
+      color: var(--color-royal-electric);
       letter-spacing: 0.2em;
       text-transform: uppercase;
       margin-bottom: var(--space-sm);
@@ -228,31 +220,32 @@
 
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      font-weight: 700;
       line-height: 0.95;
-      letter-spacing: 0.02em;
-      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
       margin-bottom: var(--space-md);
     }
-    .hero h1 .accent { color: var(--accent-1); }
+    .hero h1 .accent { color: var(--color-royal-electric); }
 
     .hero-subtitle {
-      font-weight: 200;
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-      color: var(--text-secondary);
-      max-width: 640px;
+      font-weight: 400;
+      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      color: var(--color-steel);
+      max-width: 620px;
       line-height: 1.7;
       margin-bottom: var(--space-lg);
     }
     .hero-subtitle strong {
-      color: var(--text-primary);
+      color: var(--color-ink);
       font-weight: 700;
     }
 
     .hero-cta-row {
       display: flex;
       align-items: center;
-      gap: var(--space-md);
+      gap: var(--space-sm);
       flex-wrap: wrap;
     }
 
@@ -260,43 +253,44 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.9rem 2rem;
-      background: var(--accent-1);
-      color: var(--bg-primary);
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 0.85rem 2rem;
+      background: var(--color-royal-electric);
+      color: var(--color-white);
       border: none;
+      border-radius: 6px;
       cursor: pointer;
-      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
     }
     .btn-primary:hover {
-      color: var(--bg-primary);
+      color: var(--color-white);
+      background: var(--color-cosmic-violet);
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0, 229, 160, 0.25);
+      box-shadow: 0 8px 30px rgba(123, 47, 190, 0.2);
     }
 
     .btn-outline {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.9rem 2rem;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 0.85rem 2rem;
       background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
+      color: var(--color-steel);
+      border: 1px solid var(--color-mist);
+      border-radius: 6px;
       cursor: pointer;
       transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
     }
     .btn-outline:hover {
-      border-color: var(--accent-1);
-      color: var(--accent-1);
+      border-color: var(--color-royal-electric);
+      color: var(--color-royal-electric);
     }
 
     /* ABOUT */
@@ -307,17 +301,28 @@
       align-items: start;
     }
 
+    .about-photo {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      object-position: center 15%;
+      border-radius: 50%;
+      border: 3px solid var(--color-lavender-tint);
+      margin-bottom: var(--space-md);
+      box-shadow: 0 0 40px rgba(123, 47, 190, 0.1);
+    }
+
     .about-text p {
-      font-weight: 200;
+      font-weight: 400;
       font-size: 1.05rem;
-      color: var(--text-secondary);
+      color: var(--color-steel);
       margin-bottom: var(--space-sm);
       line-height: 1.8;
     }
-    .about-text p:first-child {
-      font-size: 1.2rem;
-      color: var(--text-primary);
-      font-weight: 400;
+    .about-text p:first-of-type {
+      font-size: 1.15rem;
+      color: var(--color-ink);
+      font-weight: 500;
     }
 
     .about-stats {
@@ -327,30 +332,33 @@
     }
 
     .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: var(--color-white);
+      border: 1px solid var(--color-mist);
+      border-radius: 8px;
       padding: var(--space-md);
-      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
     .stat-card:hover {
-      border-color: var(--border-accent);
+      border-color: var(--color-lavender-tint);
       transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(123, 47, 190, 0.06);
     }
 
     .stat-number {
       font-family: var(--font-display);
-      font-size: 2.5rem;
-      color: var(--accent-1);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--color-royal-electric);
       line-height: 1;
       margin-bottom: 0.3rem;
     }
     .stat-label {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+      font-weight: 400;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--text-tertiary);
+      color: var(--color-steel);
     }
 
     /* TIMELINE */
@@ -363,7 +371,7 @@
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 1px;
-      background: linear-gradient(180deg, var(--accent-1), var(--border), transparent);
+      background: linear-gradient(180deg, var(--color-royal-electric), var(--color-mist), transparent);
     }
 
     .timeline-item {
@@ -378,41 +386,42 @@
       left: calc(-1 * var(--space-lg));
       top: 8px;
       width: 9px; height: 9px;
-      background: var(--accent-1);
+      background: var(--color-royal-electric);
       border-radius: 50%;
-      box-shadow: 0 0 12px rgba(0, 229, 160, 0.4);
+      box-shadow: 0 0 10px rgba(123, 47, 190, 0.3);
     }
 
     .timeline-date {
       font-family: var(--font-mono);
       font-size: 0.7rem;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent-1);
+      color: var(--color-royal-electric);
       margin-bottom: 0.4rem;
     }
 
     .timeline-role {
       font-family: var(--font-display);
-      font-size: 1.8rem;
-      letter-spacing: 0.03em;
-      color: var(--text-primary);
-      line-height: 1.1;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      line-height: 1.15;
       margin-bottom: 0.2rem;
     }
 
     .timeline-company {
       font-family: var(--font-mono);
       font-size: 0.8rem;
-      color: var(--text-secondary);
-      font-weight: 300;
+      color: var(--color-steel);
+      font-weight: 400;
       margin-bottom: var(--space-sm);
     }
 
     .timeline-desc {
-      color: var(--text-secondary);
-      font-weight: 200;
+      color: var(--color-steel);
+      font-weight: 400;
       font-size: 0.95rem;
       max-width: 650px;
       line-height: 1.8;
@@ -421,7 +430,7 @@
     .timeline-sub {
       margin-top: var(--space-md);
       padding-left: var(--space-sm);
-      border-left: 1px solid var(--border);
+      border-left: 1px solid var(--color-mist);
     }
 
     .timeline-sub-item { margin-bottom: var(--space-sm); }
@@ -429,23 +438,23 @@
 
     .timeline-sub-role {
       font-family: var(--font-display);
-      font-size: 1.1rem;
-      letter-spacing: 0.03em;
-      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-ink);
       line-height: 1.2;
     }
 
     .timeline-sub-meta {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: var(--text-tertiary);
-      font-weight: 300;
+      color: var(--color-steel);
+      font-weight: 400;
       margin-bottom: 0.3rem;
     }
 
     .timeline-sub-desc {
-      color: var(--text-secondary);
-      font-weight: 200;
+      color: var(--color-steel);
+      font-weight: 400;
       font-size: 0.85rem;
       max-width: 600px;
       line-height: 1.7;
@@ -459,23 +468,25 @@
     }
 
     .skill-block {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: var(--color-white);
+      border: 1px solid var(--color-mist);
+      border-radius: 8px;
       padding: var(--space-md);
       position: relative;
       overflow: hidden;
-      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
     .skill-block:hover {
-      border-color: var(--border-accent);
+      border-color: var(--color-lavender-tint);
       transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(123, 47, 190, 0.06);
     }
     .skill-block::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      background: linear-gradient(90deg, var(--color-royal-electric), var(--color-cosmic-violet));
       opacity: 0;
       transition: opacity 0.3s var(--ease);
     }
@@ -483,9 +494,9 @@
 
     .skill-category {
       font-family: var(--font-display);
-      font-size: 1.2rem;
-      letter-spacing: 0.05em;
-      color: var(--text-primary);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--color-ink);
       margin-bottom: var(--space-sm);
     }
 
@@ -494,12 +505,12 @@
     .skill-tag {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
+      font-weight: 400;
+      letter-spacing: 0.03em;
       padding: 0.3rem 0.7rem;
-      background: var(--accent-1-dim);
-      color: var(--accent-1);
-      border: 1px solid rgba(0, 229, 160, 0.1);
+      background: var(--color-lavender-tint);
+      color: var(--color-royal-electric);
+      border-radius: 4px;
     }
 
     /* PROJECTS */
@@ -510,40 +521,43 @@
     }
 
     .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: var(--color-white);
+      border: 1px solid var(--color-mist);
+      border-radius: 8px;
       padding: var(--space-md);
       display: flex;
       flex-direction: column;
-      transition: border-color 0.4s var(--ease), transform 0.3s var(--ease);
+      transition: border-color 0.4s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
     .project-card:hover {
-      border-color: var(--accent-2);
+      border-color: var(--color-cosmic-violet);
       transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.08);
     }
 
     .project-tag {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent-2);
+      color: var(--color-cosmic-violet);
       margin-bottom: 0.5rem;
     }
 
     .project-title {
       font-family: var(--font-display);
-      font-size: 1.5rem;
-      letter-spacing: 0.03em;
-      color: var(--text-primary);
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
       margin-bottom: 0.5rem;
     }
 
     .project-desc {
-      font-weight: 200;
+      font-weight: 400;
       font-size: 0.9rem;
-      color: var(--text-secondary);
+      color: var(--color-steel);
       line-height: 1.7;
       flex: 1;
     }
@@ -551,10 +565,10 @@
     .project-link {
       font-family: var(--font-mono);
       font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
+      font-weight: 400;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--accent-1);
+      color: var(--color-royal-electric);
       margin-top: var(--space-sm);
       display: inline-flex;
       align-items: center;
@@ -571,45 +585,50 @@
     }
 
     .edu-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: var(--color-white);
+      border: 1px solid var(--color-mist);
+      border-radius: 8px;
       padding: var(--space-md);
-      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
     .edu-card:hover {
-      border-color: var(--border-accent);
+      border-color: var(--color-lavender-tint);
       transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(123, 47, 190, 0.06);
     }
 
     .edu-degree {
       font-family: var(--font-display);
-      font-size: 1.4rem;
-      letter-spacing: 0.03em;
-      color: var(--text-primary);
-      line-height: 1.1;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      line-height: 1.15;
       margin-bottom: 0.3rem;
     }
 
     .edu-school {
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      font-weight: 300;
-      color: var(--accent-1);
-      letter-spacing: 0.05em;
+      font-weight: 400;
+      color: var(--color-royal-electric);
+      letter-spacing: 0.03em;
       margin-bottom: 0.5rem;
     }
 
     .edu-detail {
-      font-weight: 200;
+      font-weight: 400;
       font-size: 0.85rem;
-      color: var(--text-secondary);
+      color: var(--color-steel);
       line-height: 1.6;
     }
 
     /* FOOTER */
     footer {
+      background: var(--color-deep-space);
       padding: var(--space-lg) 0;
       text-align: center;
+      margin-top: var(--space-xl);
     }
 
     .footer-links {
@@ -623,17 +642,18 @@
     .footer-links a {
       font-family: var(--font-mono);
       font-size: 0.7rem;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--text-secondary);
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.3s var(--ease);
     }
-    .footer-links a:hover { color: var(--accent-1); }
+    .footer-links a:hover { color: var(--color-cosmic-violet); }
 
     .footer-copy {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: var(--text-tertiary);
+      color: rgba(255, 255, 255, 0.3);
       letter-spacing: 0.05em;
     }
 
@@ -675,13 +695,13 @@
         position: absolute;
         top: 100%;
         left: 0; right: 0;
-        background: rgba(8, 9, 12, 0.95);
+        background: rgba(245, 245, 247, 0.97);
         backdrop-filter: blur(20px);
         padding: var(--space-md);
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-mist);
       }
       .nav-toggle { display: block; }
-      .hero h1 { font-size: clamp(2.8rem, 12vw, 5rem); }
+      .hero h1 { font-size: clamp(2.6rem, 12vw, 4.5rem); }
       .about-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
       .projects-grid { grid-template-columns: 1fr; }
@@ -695,7 +715,7 @@
   <!-- NAV -->
   <nav>
     <div class="nav-inner">
-      <div class="nav-logo">EVAN<em>JENNINGS</em></div>
+      <div class="nav-logo">Evan<em>Jennings</em></div>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -715,7 +735,7 @@
     <!-- HERO -->
     <section class="hero">
       <p class="hero-eyebrow fade-in stagger-1">Analytics &bull; Automation &bull; AI</p>
-      <h1 class="fade-in stagger-2">EVAN<br><span class="accent">JENNINGS</span></h1>
+      <h1 class="fade-in stagger-2">Evan<br><span class="accent">Jennings</span></h1>
       <p class="hero-subtitle fade-in stagger-3">
         Giving mid-market CROs and CFOs the <strong>data clarity that $1B companies have</strong> — without the $10M budget. Founder of <a href="https://quantify-consulting.com" target="_blank" rel="noopener">Quantify</a>. Carnegie Mellon MBA. Ex-Amazon.
       </p>
@@ -728,41 +748,41 @@
     <!-- ABOUT -->
     <section id="about">
       <div class="section-label reveal"><span>01</span>&nbsp;/&nbsp;About</div>
-        <div class="about-grid">
-          <div class="about-text reveal">
-            <img src="evan.jpg" alt="Evan Jennings" style="width: 180px; height: 180px; object-fit: cover; object-position: center 15%; border-radius: 50%; border: 2px solid var(--border-accent); margin-bottom: var(--space-md); box-shadow: 0 0 30px rgba(0, 229, 160, 0.15);">
-            <p>
-              Mid-market companies shouldn't have to choose between operational chaos and enterprise budgets.
-            </p>
-            <p>
-              After building analytics infrastructure at AWS and high-growth startups, I kept seeing the same pattern: mid-market companies drowning in spreadsheets while their competitors automated everything. The enterprise playbook existed — but nobody was translating it for companies with limited budgets and timelines.
-            </p>
-            <p>
-              So in January 2025, I founded Quantify to bridge that gap. We bring enterprise-grade Analytics, Automation, and AI to commercial ops leaders who need competitive capabilities without the typical cost or complexity.
-            </p>
-            <p>
-              In under a year: zero to nearly 20 clients and a team of 4.
-            </p>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <img src="evan.jpg" alt="Evan Jennings" class="about-photo">
+          <p>
+            Mid-market companies shouldn't have to choose between operational chaos and enterprise budgets.
+          </p>
+          <p>
+            After building analytics infrastructure at AWS and high-growth startups, I kept seeing the same pattern: mid-market companies drowning in spreadsheets while their competitors automated everything. The enterprise playbook existed — but nobody was translating it for companies with limited budgets and timelines.
+          </p>
+          <p>
+            So in January 2025, I founded Quantify to bridge that gap. We bring enterprise-grade Analytics, Automation, and AI to commercial ops leaders who need competitive capabilities without the typical cost or complexity.
+          </p>
+          <p>
+            In under a year: zero to nearly 20 clients and a team of 4.
+          </p>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat-card">
+            <div class="stat-number">~20</div>
+            <div class="stat-label">Clients Served</div>
           </div>
-          <div class="about-stats reveal">
-            <div class="stat-card">
-              <div class="stat-number">~20</div>
-              <div class="stat-label">Clients Served</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number">7+</div>
-              <div class="stat-label">Years in Analytics</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number">3</div>
-              <div class="stat-label">Years at AWS</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number">MBA</div>
-              <div class="stat-label">Carnegie Mellon Tepper</div>
-            </div>
+          <div class="stat-card">
+            <div class="stat-number">7+</div>
+            <div class="stat-label">Years in Analytics</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Years at AWS</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">MBA</div>
+            <div class="stat-label">Carnegie Mellon Tepper</div>
           </div>
         </div>
+      </div>
     </section>
 
     <!-- EXPERIENCE -->
@@ -772,7 +792,7 @@
 
         <div class="timeline-item reveal">
           <div class="timeline-date">Jan 2025 — Present</div>
-          <div class="timeline-role">FOUNDER & PRINCIPAL ANALYTICS CONSULTANT</div>
+          <div class="timeline-role">Founder & Principal Analytics Consultant</div>
           <div class="timeline-company"><a href="https://quantify-consulting.com" target="_blank" rel="noopener">Quantify Consulting</a> &middot; Lowville, NY</div>
           <div class="timeline-desc">
             Enterprise-grade commercial digitalization for mid-market companies. Analytics & BI (Snowflake, BigQuery, Tableau, Power BI), automation (Zapier, Power Automate, Apps Script), and practical AI implementation. Strategic roadmapping sessions that train leadership on modern 3A technologies and build prioritized digitalization roadmaps. Grown to nearly 20 clients across diverse industries with a team of 4.
@@ -781,7 +801,7 @@
 
         <div class="timeline-item reveal">
           <div class="timeline-date">2022 — 2025 &middot; 3 years</div>
-          <div class="timeline-role">SENIOR BUSINESS INTELLIGENCE ENGINEER (L6)</div>
+          <div class="timeline-role">Senior Business Intelligence Engineer (L6)</div>
           <div class="timeline-company">Amazon Web Services &middot; New York, NY</div>
           <div class="timeline-desc">
             Led VP-sponsored initiative reducing EC2 costs 9% across a $25-50B revenue vertical through metric definition, Tableau dashboards, and cross-functional coordination. Built the #4-ranked revenue analytics dashboard (17,500+ views, 470+ users) enabling 500+ account teams to investigate daily anomalies. Created customer health dashboard for AWS's largest relationship ($6B revenue). Architected Redshift data models using advanced SQL, CTEs, and window functions. Mentored 3 BIEs and championed GenAI adoption.
@@ -790,7 +810,7 @@
 
         <div class="timeline-item reveal">
           <div class="timeline-date">2021 — 2022 &middot; 1 year</div>
-          <div class="timeline-role">BUSINESS ANALYTICS MANAGER, REVENUE OPERATIONS</div>
+          <div class="timeline-role">Business Analytics Manager, Revenue Operations</div>
           <div class="timeline-company">Plume Design, Inc &middot; Palo Alto, CA</div>
           <div class="timeline-desc">
             First analytics leader in revenue operations. Architected sales data warehouse in Databricks using Fivetran to integrate Salesforce, HubSpot, Marketo, and S3. Built global ISP dataset cataloging 10,000+ providers for TAM analysis across a multi-billion dollar addressable market. Partnered with VP RevOps and CRO to develop sales hiring plan using productivity metrics and ramp assumptions.
@@ -799,24 +819,24 @@
 
         <div class="timeline-item reveal">
           <div class="timeline-date">2018 — 2021 &middot; 3 years</div>
-          <div class="timeline-role">MBA STUDENT & CONCURRENT BI ROLES</div>
+          <div class="timeline-role">MBA Student & Concurrent BI Roles</div>
           <div class="timeline-company">Carnegie Mellon University — Tepper School of Business</div>
           <div class="timeline-desc">
             Completed MBA with University Honors while holding concurrent analytics positions:
           </div>
           <div class="timeline-sub">
             <div class="timeline-sub-item">
-              <div class="timeline-sub-role">SENIOR BI ENGINEER — BITSIGHT TECHNOLOGIES</div>
+              <div class="timeline-sub-role">Senior BI Engineer — BitSight Technologies</div>
               <div class="timeline-sub-meta">2020 – 2021</div>
               <div class="timeline-sub-desc">Built master ARR/MRR dataset in Snowflake saving FP&A 25-30 hours monthly. Led Fivetran implementation saving $80K/year. Developed Python logit model predicting customer attrition.</div>
             </div>
             <div class="timeline-sub-item">
-              <div class="timeline-sub-role">SENIOR BI ANALYST — NWN CAROUSEL</div>
+              <div class="timeline-sub-role">Senior BI Analyst — NWN Carousel</div>
               <div class="timeline-sub-meta">2019 – 2020</div>
               <div class="timeline-sub-desc">Migrated revenue reporting to Snowflake/Power BI serving 200+ users, reducing cycle time 90%. Automated contract costing eliminating 100 hours monthly.</div>
             </div>
             <div class="timeline-sub-item">
-              <div class="timeline-sub-role">BUSINESS ANALYST — HEXAGON MANUFACTURING</div>
+              <div class="timeline-sub-role">Business Analyst — Hexagon Manufacturing</div>
               <div class="timeline-sub-meta">2018 – 2019</div>
               <div class="timeline-sub-desc">Built Salesforce CPQ tool generating quotes and BOMs. Optimized pricing across 1,000+ configurations.</div>
             </div>
@@ -825,7 +845,7 @@
 
         <div class="timeline-item reveal">
           <div class="timeline-date">2016 — 2018 &middot; 2 years</div>
-          <div class="timeline-role">CHANNEL DEVELOPMENT & INSIDE TECHNICAL SALES</div>
+          <div class="timeline-role">Channel Development & Inside Technical Sales</div>
           <div class="timeline-company">APC by Schneider Electric</div>
           <div class="timeline-desc">
             Channel Development Rep (West Kingston, RI) and Inside Technical Sales Rep (Costa Mesa, CA). Early-career sales experience providing deep understanding of what commercial teams actually need from their data.
@@ -834,7 +854,7 @@
 
         <div class="timeline-item reveal">
           <div class="timeline-date">2009 — 2016 &middot; 7 years</div>
-          <div class="timeline-role">FOUNDER — E3CUBESTORE</div>
+          <div class="timeline-role">Founder — E3cubestore</div>
           <div class="timeline-company">Lowville, NY</div>
           <div class="timeline-desc">
             Founded at age 14 with a few hundred dollars, grew into a $50,000+ online puzzle retail enterprise by 2013. Featured in Wharton's Knowledge@Wharton High School and NPR. Recipient of Clarkson University "Young Entrepreneur" Scholarship.
@@ -849,7 +869,7 @@
       <div class="section-label reveal"><span>03</span>&nbsp;/&nbsp;Skills &amp; Tools</div>
       <div class="skills-grid">
         <div class="skill-block reveal">
-          <div class="skill-category">ANALYTICS & BI</div>
+          <div class="skill-category">Analytics & BI</div>
           <div class="skill-tags">
             <span class="skill-tag">Tableau</span>
             <span class="skill-tag">Power BI</span>
@@ -860,7 +880,7 @@
           </div>
         </div>
         <div class="skill-block reveal">
-          <div class="skill-category">DATA ENGINEERING</div>
+          <div class="skill-category">Data Engineering</div>
           <div class="skill-tags">
             <span class="skill-tag">Snowflake</span>
             <span class="skill-tag">Redshift</span>
@@ -871,7 +891,7 @@
           </div>
         </div>
         <div class="skill-block reveal">
-          <div class="skill-category">AUTOMATION</div>
+          <div class="skill-category">Automation</div>
           <div class="skill-tags">
             <span class="skill-tag">Zapier</span>
             <span class="skill-tag">Power Automate</span>
@@ -890,7 +910,7 @@
           </div>
         </div>
         <div class="skill-block reveal">
-          <div class="skill-category">PLATFORMS & CRM</div>
+          <div class="skill-category">Platforms & CRM</div>
           <div class="skill-tags">
             <span class="skill-tag">Salesforce</span>
             <span class="skill-tag">HubSpot</span>
@@ -900,7 +920,7 @@
           </div>
         </div>
         <div class="skill-block reveal">
-          <div class="skill-category">CERTIFICATIONS</div>
+          <div class="skill-category">Certifications</div>
           <div class="skill-tags">
             <span class="skill-tag">AWS Cloud Practitioner</span>
             <span class="skill-tag">Certified Integration Developer</span>
@@ -917,7 +937,7 @@
       <div class="projects-grid">
         <div class="project-card reveal">
           <div class="project-tag">Analytics & BI</div>
-          <div class="project-title">EXECUTIVE DASHBOARDS</div>
+          <div class="project-title">Executive Dashboards</div>
           <div class="project-desc">
             Data warehouses, ETL pipelines, and executive dashboards that give leadership real-time visibility into revenue, profitability by customer and product, and pipeline health.
           </div>
@@ -925,7 +945,7 @@
         </div>
         <div class="project-card reveal">
           <div class="project-tag">Automation</div>
-          <div class="project-title">PROCESS AUTOMATION</div>
+          <div class="project-title">Process Automation</div>
           <div class="project-desc">
             Business process automation, system integrations, automated reporting, and Airtable-based operational systems that eliminate manual work and data errors.
           </div>
@@ -933,7 +953,7 @@
         </div>
         <div class="project-card reveal">
           <div class="project-tag">AI Implementation</div>
-          <div class="project-title">PRACTICAL AI INTEGRATION</div>
+          <div class="project-title">Practical AI Integration</div>
           <div class="project-desc">
             GenAI applications embedded in real workflows — LLM integration, AI-powered data enrichment, and intelligent automation that augments your team without the hype.
           </div>
@@ -941,7 +961,7 @@
         </div>
         <div class="project-card reveal">
           <div class="project-tag">Strategy</div>
-          <div class="project-title">STRATEGIC ROADMAPPING</div>
+          <div class="project-title">Strategic Roadmapping</div>
           <div class="project-desc">
             3-4 hour sessions where we train commercial leadership on modern 3A technologies and build a prioritized digitalization roadmap tailored to your team's maturity and goals.
           </div>
@@ -955,7 +975,7 @@
       <div class="section-label reveal"><span>05</span>&nbsp;/&nbsp;Education</div>
       <div class="education-grid">
         <div class="edu-card reveal">
-          <div class="edu-degree">MBA WITH UNIVERSITY HONORS</div>
+          <div class="edu-degree">MBA with University Honors</div>
           <div class="edu-school">Carnegie Mellon University — Tepper School of Business</div>
           <div class="edu-detail">
             Business Analytics, Finance & Operations<br>
@@ -964,7 +984,7 @@
           </div>
         </div>
         <div class="edu-card reveal">
-          <div class="edu-degree">B.S. WITH GREAT DISTINCTION</div>
+          <div class="edu-degree">B.S. with Great Distinction</div>
           <div class="edu-school">Clarkson University</div>
           <div class="edu-detail">
             Innovation & Entrepreneurship<br>
