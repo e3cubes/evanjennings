@@ -125,7 +125,6 @@
     color: var(--ink-soft);
   }
   .warn strong { color: var(--ink); }
-  .warn a { color: var(--water); font-weight: 700; }
 
   /* ---------- the valve wheel ---------- */
   .valve {
@@ -191,8 +190,11 @@
     padding-top: 1.5rem;
     border-top: 1px solid var(--line);
   }
-  .contact a {
+  .help {
     flex: 1;
+    font: inherit;
+    background: none;
+    cursor: pointer;
     text-align: center;
     padding: .75rem;
     border: 1.5px solid var(--line);
@@ -201,7 +203,8 @@
     font-weight: 700;
     text-decoration: none;
   }
-  .contact a:focus-visible { outline: 3px solid var(--water); outline-offset: 2px; }
+  .help:focus-visible { outline: 3px solid var(--water); outline-offset: 2px; }
+  .help:disabled { cursor: default; color: var(--ink-soft); }
 
   .view[hidden], .contact[hidden] { display: none; }
 
@@ -209,35 +212,57 @@
     .wheel { transition: opacity .2s; }
     body[data-mode] .valve.turning .wheel, body[data-mode] .valve.done .wheel { transform: none; }
   }
+
+  /* ---------- choices: which water, what's happening ---------- */
+  .group { margin: 0 0 1.5rem; padding: 0; border: 0; }
+  .group legend { padding: 0; margin: 0 0 .6rem; font-weight: 700; }
+  .opts { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .opt { position: relative; flex: 1 1 9rem; }
+  .opt input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .opt span {
+    display: block;
+    padding: .8rem 1rem;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel);
+    font-weight: 700;
+    text-align: center;
+  }
+  .opt input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .opt input[value="off"]:checked + span { background: var(--shutoff); border-color: var(--shutoff); }
+  .opt input:focus-visible + span { outline: 3px solid var(--water); outline-offset: 2px; }
+  .opt input:disabled { cursor: default; }
+  .group[hidden], .contact[hidden], #control[hidden], #on-extra[hidden] { display: none; }
 </style>
 </head>
-<body data-mode="on">
+<body data-mode="">
 <main>
   <span class="tag" id="home" hidden></span>
 
-  <!-- Turn on -->
-  <section class="view" id="view-on" hidden>
-    <h1>Turn the water back on</h1>
-    <p class="lede">The water at this home has been shut off. Check these two things first:</p>
+  <h1 id="title">Water</h1>
+  <p class="lede" id="lede"></p>
+
+  <fieldset class="group" id="pick" hidden>
+    <legend>Which water?</legend>
+    <div class="opts" id="pick-opts"></div>
+  </fieldset>
+
+  <fieldset class="group" id="choose" hidden>
+    <legend>What’s happening?</legend>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="mode" value="on"><span>The water is off</span></label>
+      <label class="opt"><input type="radio" name="mode" value="off"><span>I see a leak</span></label>
+    </div>
+  </fieldset>
+
+  <div id="on-extra" hidden>
     <fieldset class="checks">
       <legend>Before turning the water on</legend>
       <label class="check"><input type="checkbox" class="gate"> <span>No water on floors, ceilings or under any sinks</span></label>
       <label class="check"><input type="checkbox" class="gate"> <span>No faucets, toilets or hoses left running</span></label>
     </fieldset>
-    <p class="warn"><strong>See water anywhere?</strong> Leave it off and <a class="owner-sms" href="#">text <span class="owner-name"></span></a>.</p>
-  </section>
-
-  <!-- Turn off -->
-  <section class="view" id="view-off" hidden>
-    <h1>Shut the water off</h1>
-    <p class="lede">Use this if you see a leak or water where it shouldn’t be. The main valve closes within a minute.</p>
-  </section>
-
-  <!-- Bad link -->
-  <section class="view" id="view-bad" hidden>
-    <h1>This link is incomplete</h1>
-    <p class="lede">Scan the code on the tag again. If it still doesn’t work, contact <span class="owner-name"></span>.</p>
-  </section>
+    <p class="warn"><strong>See water anywhere?</strong> Leave it off and tap “Ask <span class="owner-name"></span> for help” below.</p>
+  </div>
 
   <div id="control" hidden>
     <button type="button" class="valve" id="valve">
@@ -265,10 +290,9 @@
     <p id="result-sub"></p>
   </div>
 
-  <nav class="contact" aria-label="Contact">
-    <a class="owner-sms" href="#">Text <span class="owner-name"></span></a>
-    <a class="owner-tel" href="#">Call <span class="owner-name"></span></a>
-  </nav>
+  <div class="contact" id="contact" hidden>
+    <button type="button" class="help" id="help">Ask <span class="owner-name"></span> for help</button>
+  </div>
 </main>
 
 <script>
@@ -276,72 +300,101 @@
 const CONFIG = {
   webhookUrl: "https://hooks.zapier.com/hooks/catch/21697097/41wevds/", // Zapier Catch Hook
   ownerName:  "Evan",
-  notifyOnOpen: true,                // also ping the Zap when the page is opened (you get a "scanned" text)
-  noCors: false                      // set true only if presses work in Zapier but the page shows an error
+  notifyOnOpen: true,  // also ping the Zap when the page is opened (you get an "opened" text)
+  noCors: false        // set true only if presses work in Zapier but the page shows an error
 };
 /* ================================================== */
-
+/*
+  QR link format:
+    ?t=<sticker token>&v=<Name>:<deviceId>[,<Name>:<deviceId>...][&a=on|off]
+  t  identifies the printed sticker (Airtable decides which valves it may control)
+  v  the valves to offer on this page; one valve = no picker
+  a  optional: lock the sticker to one action; leave it off to let the guest choose
+*/
 (function () {
   const $ = (s) => document.querySelector(s);
   const params = new URLSearchParams(location.search);
   const token  = (params.get("t") || "").trim();
-  const action = (params.get("a") || "").toLowerCase();
-  const home   = (params.get("h") || "").trim();
-  const device = (params.get("d") || "").trim();
-  // Phone comes from the QR link (p=13155550123), never from this file. Digits only.
-  const digits = (params.get("p") || "").replace(/\D/g, "");
-  const phone  = digits.length >= 11 ? "+" + digits : digits.length === 10 ? digits : "";
+  const locked = (params.get("a") || "").toLowerCase();
+  const valves = (params.get("v") || "").split(",").map((pair) => {
+    const i = pair.lastIndexOf(":");
+    return i > 0 ? { name: pair.slice(0, i).trim(), id: pair.slice(i + 1).trim() } : null;
+  }).filter((v) => v && v.name && /^[0-9a-f-]{8,}$/i.test(v.id));
 
   // Keep the code out of the address bar so it isn't copied along if someone shares the page.
   try { history.replaceState(null, "", location.pathname); } catch (_) {}
-
-  // Owner contact links
   document.querySelectorAll(".owner-name").forEach((el) => (el.textContent = CONFIG.ownerName));
-  if (phone) {
-    document.querySelectorAll(".owner-sms").forEach((el) => (el.href = "sms:" + phone));
-    document.querySelectorAll(".owner-tel").forEach((el) => (el.href = "tel:" + phone));
-  } else {
-    // No number in the link: drop the Text/Call buttons and point to the usual channel instead.
-    document.querySelector(".contact").hidden = true;
-    document.querySelectorAll(".warn .owner-sms").forEach((el) => el.replaceWith(Object.assign(document.createElement("span"), { textContent: "message " + CONFIG.ownerName })));
+
+  const title = $("#title"), lede = $("#lede");
+  const lockOk = locked === "" || locked === "on" || locked === "off";
+  if (token.length < 16 || !valves.length || !lockOk) {
+    title.textContent = "This link is incomplete";
+    lede.textContent = "Scan the code again. If it still doesn’t work, message " + CONFIG.ownerName + " the way you normally would.";
+    return;
   }
 
-  if (home) { const tag = $("#home"); tag.textContent = home; tag.hidden = false; document.title = "Water · " + home; }
-
-  const valid = token.length >= 16 && (action === "on" || action === "off");
-  if (!valid) { $("#view-bad").hidden = false; return; }
-
-  document.body.dataset.mode = action;
-  $("#view-" + action).hidden = false;
-  $("#control").hidden = false;
-
-  const btn   = $("#valve");
-  const label = $("#valve-label");
-  const hint  = $("#hint");
-  const gates = Array.from(document.querySelectorAll("#view-on .gate"));
-  const idle  = action === "on" ? "Turn water on" : "Shut water off";
-  label.textContent = idle;
+  let mode = locked;                               // "on" | "off" | ""
+  let device = valves.length === 1 ? valves[0] : null;
 
   function send(event) {
-    const body = new URLSearchParams({ t: token, a: action, d: device, h: home, event, at: new Date().toISOString() });
+    const body = new URLSearchParams({ t: token, event, a: mode, d: device ? device.id : "", at: new Date().toISOString() });
     const opts = { method: "POST", body, keepalive: true };
     if (CONFIG.noCors) opts.mode = "no-cors";
     return fetch(CONFIG.webhookUrl, opts).then((r) => {
       if (!CONFIG.noCors && !r.ok) throw new Error("HTTP " + r.status);
     });
   }
-
   if (CONFIG.notifyOnOpen) send("view").catch(() => {});
 
-  // On: both checks must be ticked first. Off: no friction.
-  function updateGate() {
-    if (action !== "on" || btn.classList.contains("done")) return;
-    const ready = gates.every((g) => g.checked);
-    btn.disabled = !ready;
-    hint.textContent = ready ? "" : "Tick both boxes to continue";
+  // Which water (only when this sticker offers more than one valve)
+  const tag = $("#home");
+  if (device) { tag.textContent = device.name; tag.hidden = false; document.title = "Water · " + device.name; }
+  else {
+    const opts = $("#pick-opts");
+    valves.forEach((v) => {
+      const l = document.createElement("label"); l.className = "opt";
+      const r = Object.assign(document.createElement("input"), { type: "radio", name: "valve", value: v.id });
+      const s = document.createElement("span"); s.textContent = v.name;
+      l.append(r, s); opts.append(l);
+      r.addEventListener("change", () => { device = v; render(); });
+    });
+    $("#pick").hidden = false;
   }
-  gates.forEach((g) => g.addEventListener("change", updateGate));
-  updateGate();
+
+  // What's happening (only when the sticker isn't locked to one action)
+  if (!locked) {
+    $("#choose").hidden = false;
+    document.querySelectorAll('input[name="mode"]').forEach((r) =>
+      r.addEventListener("change", () => { mode = r.value; render(); }));
+  }
+
+  const btn = $("#valve"), label = $("#valve-label"), hint = $("#hint");
+  const gates = Array.from(document.querySelectorAll(".gate"));
+  gates.forEach((g) => g.addEventListener("change", render));
+  $("#contact").hidden = false;
+
+  const COPY = {
+    "":  { title: "Water", lede: "Choose what’s happening and the page will walk you through it." },
+    on:  { title: "Turn the water back on", lede: "The water has been shut off. Check these two things first:", cta: "Turn water on" },
+    off: { title: "Shut the water off", lede: "Use this if you see a leak or water where it shouldn’t be. The main valve closes within a minute.", cta: "Shut water off" }
+  };
+
+  function render() {
+    if (btn.classList.contains("turning") || btn.classList.contains("done")) return;
+    document.body.dataset.mode = mode;
+    title.textContent = COPY[mode].title;
+    lede.textContent = COPY[mode].lede;
+    $("#on-extra").hidden = mode !== "on";
+    $("#control").hidden = !mode;
+    if (!mode) return;
+    label.textContent = COPY[mode].cta;
+    let why = "";
+    if (!device) why = "Choose which water first";
+    else if (mode === "on" && !gates.every((g) => g.checked)) why = "Tick both boxes to continue";
+    btn.disabled = !!why;
+    hint.textContent = why;
+  }
+  render();
 
   function showResult(ok, main, sub) {
     const box = $("#result");
@@ -350,36 +403,38 @@ const CONFIG = {
     $("#result-sub").textContent = sub;
     box.hidden = false;
   }
+  function lockInputs(on) { document.querySelectorAll("#pick input, #choose input, .gate").forEach((i) => (i.disabled = on)); }
 
   btn.addEventListener("click", () => {
     if (btn.disabled || btn.classList.contains("turning") || btn.classList.contains("done")) return;
-    if (!navigator.onLine) {
-      showResult(false, "Your phone is offline.", "Connect to Wi‑Fi or cellular data and try again.");
-      return;
-    }
+    if (!navigator.onLine) { showResult(false, "Your phone is offline.", "Connect to Wi‑Fi or cellular data and try again."); return; }
     btn.classList.add("turning");
-    label.textContent = action === "on" ? "Turning on…" : "Shutting off…";
+    label.textContent = mode === "on" ? "Turning on…" : "Shutting off…";
     hint.textContent = "";
-    gates.forEach((g) => (g.disabled = true));
-
+    lockInputs(true);
     const minTurn = new Promise((r) => setTimeout(r, 1600)); // let the wheel finish its turn
     Promise.all([send("press"), minTurn]).then(() => {
       btn.classList.replace("turning", "done");
       btn.setAttribute("aria-disabled", "true");
-      if (action === "on") {
-        label.textContent = "Water on requested";
-        showResult(true, "Water should flow again within a minute.", CONFIG.ownerName + " has been notified.");
-      } else {
-        label.textContent = "Shut-off requested";
-        showResult(true, "The main valve closes within a minute.", CONFIG.ownerName + " has been notified. If water is spreading, also contact " + CONFIG.ownerName + " directly.");
-      }
+      label.textContent = mode === "on" ? "Water on requested" : "Shut-off requested";
+      showResult(true,
+        mode === "on" ? device.name + ": water should flow again within a minute." : device.name + ": the main valve closes within a minute.",
+        CONFIG.ownerName + " has been notified.");
     }).catch(() => {
       btn.classList.remove("turning");
-      label.textContent = idle;
-      gates.forEach((g) => (g.disabled = false));
-      updateGate();
-      showResult(false, "The request didn’t go through.", "Check your connection and press again, or contact " + CONFIG.ownerName + (phone ? " below." : " directly."));
+      lockInputs(false);
+      render();
+      showResult(false, "The request didn’t go through.", "Check your connection and press again, or message " + CONFIG.ownerName + " the way you normally would.");
     });
+  });
+
+  const help = $("#help");
+  help.addEventListener("click", () => {
+    if (help.disabled) return;
+    help.disabled = true;
+    help.textContent = "Sending…";
+    send("help").then(() => { help.textContent = CONFIG.ownerName + " has been notified"; })
+      .catch(() => { help.disabled = false; help.textContent = "Couldn’t send. Tap to try again"; });
   });
 })();
 </script>
