@@ -203,7 +203,7 @@
   }
   .contact a:focus-visible { outline: 3px solid var(--water); outline-offset: 2px; }
 
-  .view[hidden] { display: none; }
+  .view[hidden], .contact[hidden] { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
     .wheel { transition: opacity .2s; }
@@ -274,9 +274,8 @@
 <script>
 /* ===================== CONFIG ===================== */
 const CONFIG = {
-  webhookUrl: "https://hooks.zapier.com/hooks/catch/XXXXXXX/YYYYYYY/", // your Zapier Catch Hook
+  webhookUrl: "https://hooks.zapier.com/hooks/catch/21697097/41wevds/", // Zapier Catch Hook
   ownerName:  "Evan",
-  ownerPhone: "+13155550123",        // E.164, used for the Text / Call links
   notifyOnOpen: true,                // also ping the Zap when the page is opened (you get a "scanned" text)
   noCors: false                      // set true only if presses work in Zapier but the page shows an error
 };
@@ -288,14 +287,24 @@ const CONFIG = {
   const token  = (params.get("t") || "").trim();
   const action = (params.get("a") || "").toLowerCase();
   const home   = (params.get("h") || "").trim();
+  const device = (params.get("d") || "").trim();
+  // Phone comes from the QR link (p=13155550123), never from this file. Digits only.
+  const digits = (params.get("p") || "").replace(/\D/g, "");
+  const phone  = digits.length >= 11 ? "+" + digits : digits.length === 10 ? digits : "";
 
   // Keep the code out of the address bar so it isn't copied along if someone shares the page.
   try { history.replaceState(null, "", location.pathname); } catch (_) {}
 
   // Owner contact links
   document.querySelectorAll(".owner-name").forEach((el) => (el.textContent = CONFIG.ownerName));
-  document.querySelectorAll(".owner-sms").forEach((el) => (el.href = "sms:" + CONFIG.ownerPhone));
-  document.querySelectorAll(".owner-tel").forEach((el) => (el.href = "tel:" + CONFIG.ownerPhone));
+  if (phone) {
+    document.querySelectorAll(".owner-sms").forEach((el) => (el.href = "sms:" + phone));
+    document.querySelectorAll(".owner-tel").forEach((el) => (el.href = "tel:" + phone));
+  } else {
+    // No number in the link: drop the Text/Call buttons and point to the usual channel instead.
+    document.querySelector(".contact").hidden = true;
+    document.querySelectorAll(".warn .owner-sms").forEach((el) => el.replaceWith(Object.assign(document.createElement("span"), { textContent: "message " + CONFIG.ownerName })));
+  }
 
   if (home) { const tag = $("#home"); tag.textContent = home; tag.hidden = false; document.title = "Water · " + home; }
 
@@ -314,7 +323,7 @@ const CONFIG = {
   label.textContent = idle;
 
   function send(event) {
-    const body = new URLSearchParams({ t: token, a: action, h: home, event, at: new Date().toISOString() });
+    const body = new URLSearchParams({ t: token, a: action, d: device, h: home, event, at: new Date().toISOString() });
     const opts = { method: "POST", body, keepalive: true };
     if (CONFIG.noCors) opts.mode = "no-cors";
     return fetch(CONFIG.webhookUrl, opts).then((r) => {
@@ -362,14 +371,14 @@ const CONFIG = {
         showResult(true, "Water should flow again within a minute.", CONFIG.ownerName + " has been notified.");
       } else {
         label.textContent = "Shut-off requested";
-        showResult(true, "The main valve closes within a minute.", CONFIG.ownerName + " has been notified. If water is spreading, also call " + CONFIG.ownerName + ".");
+        showResult(true, "The main valve closes within a minute.", CONFIG.ownerName + " has been notified. If water is spreading, also contact " + CONFIG.ownerName + " directly.");
       }
     }).catch(() => {
       btn.classList.remove("turning");
       label.textContent = idle;
       gates.forEach((g) => (g.disabled = false));
       updateGate();
-      showResult(false, "The request didn’t go through.", "Check your connection and press again, or contact " + CONFIG.ownerName + " below.");
+      showResult(false, "The request didn’t go through.", "Check your connection and press again, or contact " + CONFIG.ownerName + (phone ? " below." : " directly."));
     });
   });
 })();
