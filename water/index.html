@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Water</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💧</text></svg>">
+<style>
+  /* ---------- tokens ---------- */
+  :root {
+    --paper: #EAF1F0;
+    --ink: #12343B;
+    --ink-soft: #4C6A70;
+    --water: #1F7A8C;
+    --shutoff: #C8332B;
+    --line: #C9D8D6;
+    --panel: #F6FAF9;
+    --ok: #2E7D4F;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --paper: #0E2328;
+      --ink: #E3EEEC;
+      --ink-soft: #9DB6B8;
+      --water: #4FB3C6;
+      --shutoff: #E8574D;
+      --line: #24434A;
+      --panel: #143038;
+      --ok: #5CC489;
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-rounded, "SF Pro Rounded", "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    max-width: 26rem;
+    margin: 0 auto;
+    padding: 2.25rem 1.5rem 2.5rem;
+  }
+
+  /* ---------- the tag (home name) ---------- */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .3rem .8rem .3rem .45rem;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    font-size: .875rem;
+    font-weight: 600;
+  }
+  .tag::before {
+    content: "";
+    width: .7rem; height: .7rem;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+  }
+  .tag[hidden] { display: none; }
+
+  h1 {
+    font-size: 2.25rem;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin: 1.1rem 0 .6rem;
+  }
+  .lede { margin: 0 0 1.5rem; color: var(--ink-soft); }
+
+  /* ---------- checklist (on only) ---------- */
+  .checks {
+    margin: 0 0 1.25rem;
+    padding: .25rem 0;
+    border: 0;
+    background: var(--panel);
+    border-radius: 14px;
+  }
+  .checks legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .check {
+    display: flex;
+    gap: .85rem;
+    align-items: flex-start;
+    padding: .85rem 1rem;
+    cursor: pointer;
+  }
+  .check + .check { border-top: 1px solid var(--line); }
+  .check input {
+    appearance: none;
+    flex: none;
+    width: 1.5rem; height: 1.5rem;
+    margin: .05rem 0 0;
+    border: 2px solid var(--ink-soft);
+    border-radius: 7px;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
+  .check input:checked { background: var(--water); border-color: var(--water); }
+  .check input:checked::after {
+    content: "";
+    width: .45rem; height: .8rem;
+    border: solid var(--paper);
+    border-width: 0 3px 3px 0;
+    transform: translateY(-2px) rotate(45deg);
+  }
+  .warn {
+    margin: 0 0 2rem;
+    font-size: .95rem;
+    color: var(--ink-soft);
+  }
+  .warn strong { color: var(--ink); }
+  .warn a { color: var(--water); font-weight: 700; }
+
+  /* ---------- the valve wheel ---------- */
+  .valve {
+    --accent: var(--water);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body[data-mode="off"] .valve { --accent: var(--shutoff); }
+  .wheel {
+    width: min(64vw, 15rem);
+    aspect-ratio: 1;
+    color: var(--accent);
+    transition: transform 1.6s cubic-bezier(.45,.05,.25,1), opacity .2s;
+  }
+  .valve-label {
+    font-size: 1.35rem;
+    font-weight: 800;
+    padding: .7rem 1.6rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--paper);
+  }
+  .valve:focus-visible { outline: none; }
+  .valve:focus-visible .valve-label { outline: 3px solid var(--ink); outline-offset: 4px; }
+  .valve:disabled { cursor: not-allowed; }
+  .valve:disabled .wheel { opacity: .35; }
+  .valve:disabled .valve-label { background: var(--line); color: var(--ink-soft); }
+  .valve.turning, .valve.done { cursor: default; }
+  .valve.turning .wheel, .valve.done .wheel { opacity: 1; }
+  body[data-mode="on"]  .valve.turning .wheel, body[data-mode="on"]  .valve.done .wheel { transform: rotate(-270deg); }
+  body[data-mode="off"] .valve.turning .wheel, body[data-mode="off"] .valve.done .wheel { transform: rotate(270deg); }
+  .valve.turning .valve-label, .valve.done .valve-label { background: var(--accent); color: var(--paper); }
+  .hint { text-align: center; color: var(--ink-soft); font-size: .9rem; margin: .75rem 0 0; min-height: 1.4em; }
+
+  /* ---------- result + contact ---------- */
+  .result {
+    margin: 2rem 0 0;
+    padding: 1rem 1.1rem;
+    border-radius: 14px;
+    background: var(--panel);
+    border-left: 5px solid var(--ok);
+  }
+  .result.error { border-left-color: var(--shutoff); }
+  .result p { margin: 0; }
+  .result p + p { margin-top: .35rem; color: var(--ink-soft); font-size: .95rem; }
+  .result[hidden] { display: none; }
+
+  .contact {
+    display: flex;
+    gap: .75rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .contact a {
+    flex: 1;
+    text-align: center;
+    padding: .75rem;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .contact a:focus-visible { outline: 3px solid var(--water); outline-offset: 2px; }
+
+  .view[hidden] { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wheel { transition: opacity .2s; }
+    body[data-mode] .valve.turning .wheel, body[data-mode] .valve.done .wheel { transform: none; }
+  }
+</style>
+</head>
+<body data-mode="on">
+<main>
+  <span class="tag" id="home" hidden></span>
+
+  <!-- Turn on -->
+  <section class="view" id="view-on" hidden>
+    <h1>Turn the water back on</h1>
+    <p class="lede">The water at this home has been shut off. Check these two things first:</p>
+    <fieldset class="checks">
+      <legend>Before turning the water on</legend>
+      <label class="check"><input type="checkbox" class="gate"> <span>No water on floors, ceilings or under any sinks</span></label>
+      <label class="check"><input type="checkbox" class="gate"> <span>No faucets, toilets or hoses left running</span></label>
+    </fieldset>
+    <p class="warn"><strong>See water anywhere?</strong> Leave it off and <a class="owner-sms" href="#">text <span class="owner-name"></span></a>.</p>
+  </section>
+
+  <!-- Turn off -->
+  <section class="view" id="view-off" hidden>
+    <h1>Shut the water off</h1>
+    <p class="lede">Use this if you see a leak or water where it shouldn’t be. The main valve closes within a minute.</p>
+  </section>
+
+  <!-- Bad link -->
+  <section class="view" id="view-bad" hidden>
+    <h1>This link is incomplete</h1>
+    <p class="lede">Scan the code on the tag again. If it still doesn’t work, contact <span class="owner-name"></span>.</p>
+  </section>
+
+  <div id="control" hidden>
+    <button type="button" class="valve" id="valve">
+      <svg class="wheel" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-linecap="round">
+          <circle cx="100" cy="100" r="82" stroke-width="16"/>
+          <g stroke-width="12">
+            <line x1="100" y1="100" x2="100" y2="22"/>
+            <line x1="100" y1="100" x2="174" y2="76"/>
+            <line x1="100" y1="100" x2="146" y2="163"/>
+            <line x1="100" y1="100" x2="54"  y2="163"/>
+            <line x1="100" y1="100" x2="26"  y2="76"/>
+          </g>
+        </g>
+        <circle cx="100" cy="100" r="22" fill="currentColor"/>
+        <circle cx="100" cy="100" r="8" fill="var(--paper)"/>
+      </svg>
+      <span class="valve-label" id="valve-label"></span>
+    </button>
+    <p class="hint" id="hint" aria-live="polite"></p>
+  </div>
+
+  <div class="result" id="result" role="status" hidden>
+    <p id="result-main"></p>
+    <p id="result-sub"></p>
+  </div>
+
+  <nav class="contact" aria-label="Contact">
+    <a class="owner-sms" href="#">Text <span class="owner-name"></span></a>
+    <a class="owner-tel" href="#">Call <span class="owner-name"></span></a>
+  </nav>
+</main>
+
+<script>
+/* ===================== CONFIG ===================== */
+const CONFIG = {
+  webhookUrl: "https://hooks.zapier.com/hooks/catch/XXXXXXX/YYYYYYY/", // your Zapier Catch Hook
+  ownerName:  "Evan",
+  ownerPhone: "+13155550123",        // E.164, used for the Text / Call links
+  notifyOnOpen: true,                // also ping the Zap when the page is opened (you get a "scanned" text)
+  noCors: false                      // set true only if presses work in Zapier but the page shows an error
+};
+/* ================================================== */
+
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  const token  = (params.get("t") || "").trim();
+  const action = (params.get("a") || "").toLowerCase();
+  const home   = (params.get("h") || "").trim();
+
+  // Keep the code out of the address bar so it isn't copied along if someone shares the page.
+  try { history.replaceState(null, "", location.pathname); } catch (_) {}
+
+  // Owner contact links
+  document.querySelectorAll(".owner-name").forEach((el) => (el.textContent = CONFIG.ownerName));
+  document.querySelectorAll(".owner-sms").forEach((el) => (el.href = "sms:" + CONFIG.ownerPhone));
+  document.querySelectorAll(".owner-tel").forEach((el) => (el.href = "tel:" + CONFIG.ownerPhone));
+
+  if (home) { const tag = $("#home"); tag.textContent = home; tag.hidden = false; document.title = "Water · " + home; }
+
+  const valid = token.length >= 16 && (action === "on" || action === "off");
+  if (!valid) { $("#view-bad").hidden = false; return; }
+
+  document.body.dataset.mode = action;
+  $("#view-" + action).hidden = false;
+  $("#control").hidden = false;
+
+  const btn   = $("#valve");
+  const label = $("#valve-label");
+  const hint  = $("#hint");
+  const gates = Array.from(document.querySelectorAll("#view-on .gate"));
+  const idle  = action === "on" ? "Turn water on" : "Shut water off";
+  label.textContent = idle;
+
+  function send(event) {
+    const body = new URLSearchParams({ t: token, a: action, h: home, event, at: new Date().toISOString() });
+    const opts = { method: "POST", body, keepalive: true };
+    if (CONFIG.noCors) opts.mode = "no-cors";
+    return fetch(CONFIG.webhookUrl, opts).then((r) => {
+      if (!CONFIG.noCors && !r.ok) throw new Error("HTTP " + r.status);
+    });
+  }
+
+  if (CONFIG.notifyOnOpen) send("view").catch(() => {});
+
+  // On: both checks must be ticked first. Off: no friction.
+  function updateGate() {
+    if (action !== "on" || btn.classList.contains("done")) return;
+    const ready = gates.every((g) => g.checked);
+    btn.disabled = !ready;
+    hint.textContent = ready ? "" : "Tick both boxes to continue";
+  }
+  gates.forEach((g) => g.addEventListener("change", updateGate));
+  updateGate();
+
+  function showResult(ok, main, sub) {
+    const box = $("#result");
+    box.classList.toggle("error", !ok);
+    $("#result-main").textContent = main;
+    $("#result-sub").textContent = sub;
+    box.hidden = false;
+  }
+
+  btn.addEventListener("click", () => {
+    if (btn.disabled || btn.classList.contains("turning") || btn.classList.contains("done")) return;
+    if (!navigator.onLine) {
+      showResult(false, "Your phone is offline.", "Connect to Wi‑Fi or cellular data and try again.");
+      return;
+    }
+    btn.classList.add("turning");
+    label.textContent = action === "on" ? "Turning on…" : "Shutting off…";
+    hint.textContent = "";
+    gates.forEach((g) => (g.disabled = true));
+
+    const minTurn = new Promise((r) => setTimeout(r, 1600)); // let the wheel finish its turn
+    Promise.all([send("press"), minTurn]).then(() => {
+      btn.classList.replace("turning", "done");
+      btn.setAttribute("aria-disabled", "true");
+      if (action === "on") {
+        label.textContent = "Water on requested";
+        showResult(true, "Water should flow again within a minute.", CONFIG.ownerName + " has been notified.");
+      } else {
+        label.textContent = "Shut-off requested";
+        showResult(true, "The main valve closes within a minute.", CONFIG.ownerName + " has been notified. If water is spreading, also call " + CONFIG.ownerName + ".");
+      }
+    }).catch(() => {
+      btn.classList.remove("turning");
+      label.textContent = idle;
+      gates.forEach((g) => (g.disabled = false));
+      updateGate();
+      showResult(false, "The request didn’t go through.", "Check your connection and press again, or contact " + CONFIG.ownerName + " below.");
+    });
+  });
+})();
+</script>
+</body>
+</html>
